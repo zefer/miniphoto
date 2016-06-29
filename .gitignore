@@ -1,0 +1,6 @@
+frontend/bower_components/
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+mothership
+frontend.go
