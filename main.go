@@ -24,7 +24,7 @@ var (
 
 func main() {
 	flag.Parse()
-	glog.Infof("Starting API for Photos on port %s.", *port)
+	glog.Infof("Starting photos on port %s.", *port)
 
 	if *abProjectID > int64(0) && *abApiKey != "" {
 		airbrake := gobrake.NewNotifier(*abProjectID, *abApiKey)
@@ -39,7 +39,7 @@ func main() {
 	fs := http.FileServer(http.Dir(*photoRoot))
 	http.Handle("/photo/", http.StripPrefix("/photo/", fs))
 
-	http.HandleFunc("/", serveTemplate)
+	http.HandleFunc("/", handleMain)
 
 	glog.Infof("Listening on %s.", *port)
 	err := http.ListenAndServe(*port, nil)
@@ -49,7 +49,7 @@ func main() {
 	}
 }
 
-func serveTemplate(w http.ResponseWriter, r *http.Request) {
+func handleMain(w http.ResponseWriter, r *http.Request) {
 	dirs, err := listDirs(*photoRoot)
 	if err != nil {
 		log.Println(err.Error())
