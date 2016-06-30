@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
+	"html/template"
+	"log"
 	"net/http"
+	"path"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
-	"github.com/zefer/bass-photo/handlers"
 	"gopkg.in/airbrake/glog.v1"
 	"gopkg.in/airbrake/gobrake.v1"
 )
@@ -29,7 +31,7 @@ func main() {
 		glog.Gobrake = airbrake
 	}
 
-	http.Handle("/list", handlers.ListHandler(photoRoot))
+	// http.Handle("/list", handlers.ListHandler(photoRoot))
 
 	// http.HandleFunc("/websocket", websocket.Serve)
 	// http.Handle("/next", handlers.NextHandler(client))
@@ -42,15 +44,56 @@ func main() {
 	// http.Handle("/playlist", handlers.PlayListHandler(client))
 	// http.Handle("/library/updated", handlers.LibraryUpdateHandler(client))
 
-	// The front-end assets are served from a go-bindata file.
-	http.Handle("/", http.FileServer(&assetfs.AssetFS{
+	// http.Handle("/assets", http.FileServer(&assetfs.AssetFS{
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(&assetfs.AssetFS{
 		Asset: Asset, AssetDir: AssetDir, Prefix: "",
-	}))
+	})))
+
+	fs := http.FileServer(http.Dir(*photoRoot))
+	http.Handle("/photo/", http.StripPrefix("/photo/", fs))
+
+	http.HandleFunc("/", serveTemplate)
 
 	glog.Infof("Listening on %s.", *port)
 	err := http.ListenAndServe(*port, nil)
 	if err != nil {
 		glog.Errorf("http.ListenAndServe %s failed: %s", *port, err)
 		return
+	}
+}
+
+func serveTemplate(w http.ResponseWriter, r *http.Request) {
+	lp := path.Join("templates", "layout.html")
+	np := path.Join("templates", "nav.html")
+	pp := path.Join("templates", "photoswipe.html")
+	// fp := path.Join("templates", r.URL.Path)
+
+	imgJson, err := listImages(photoRoot, "")
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	tmpl, err := template.ParseFiles(lp, np, pp)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	data := struct {
+		Title  string
+		Dirs   []string
+		Images template.JS
+	}{
+		"Banana",
+		[]string{},
+		template.JS(imgJson),
+	}
+
+	if err := tmpl.ExecuteTemplate(w, "layout", &data); err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
 	}
 }
