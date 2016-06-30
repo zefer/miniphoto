@@ -13,10 +13,19 @@
 
 </head>
 <body>
+
+<header>
+{{if .Home}}{{else}}<a href="/" title="Home" class="home">&#9664; home</a>{{end}}
+<h1>{{.Title}}</h1>
+</header>
+
   <nav><ul>
   {{range .Dirs}}<li><a href="{{ . }}">{{ . }}</a></li>{{else}}<div><strong>no photos yet, check back soon</strong></div>{{end}}
   </ul></nav>
+
+  <main>
   {{template "photoswipe"}}
+  </main>
 
 <script>
 var images = {{.Images}};

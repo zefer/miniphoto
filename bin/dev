@@ -1,4 +1,4 @@
 #!/bin/sh
 
 go-bindata -debug -o ./frontend.go -prefix "assets" assets/...
-go run *.go -root "/Users/joe/Dropbox (Personal)/Pictures/" -port :8081
+go run *.go -root "/Users/joe/Dropbox (Personal)/Pictures/" -port :8081 -title "Bass Week Photos"

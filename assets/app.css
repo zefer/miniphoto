@@ -1,3 +1,22 @@
 body {
   font-family: sans-serif;
 }
+
+header .home {
+  font-size: 2em;
+  float: right;
+  text-decoration: none;
+}
+
+h1 {
+  float: left;
+}
+
+header .home, h1 {
+  margin-top: .2em;
+  padding-top: .2em;
+}
+
+main, nav {
+  clear: both;
+}
