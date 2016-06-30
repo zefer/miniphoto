@@ -31,20 +31,6 @@ func main() {
 		glog.Gobrake = airbrake
 	}
 
-	// http.Handle("/list", handlers.ListHandler(photoRoot))
-
-	// http.HandleFunc("/websocket", websocket.Serve)
-	// http.Handle("/next", handlers.NextHandler(client))
-	// http.Handle("/previous", handlers.PreviousHandler(client))
-	// http.Handle("/play", handlers.PlayHandler(client))
-	// http.Handle("/pause", handlers.PauseHandler(client))
-	// http.Handle("/randomOn", handlers.RandomOnHandler(client))
-	// http.Handle("/randomOff", handlers.RandomOffHandler(client))
-	// http.Handle("/files", handlers.FileListHandler(client))
-	// http.Handle("/playlist", handlers.PlayListHandler(client))
-	// http.Handle("/library/updated", handlers.LibraryUpdateHandler(client))
-
-	// http.Handle("/assets", http.FileServer(&assetfs.AssetFS{
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(&assetfs.AssetFS{
 		Asset: Asset, AssetDir: AssetDir, Prefix: "",
 	})))
@@ -65,7 +51,6 @@ func main() {
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
 	lp := path.Join("templates", "layout.html")
 	pp := path.Join("templates", "photoswipe.html")
-	// fp := path.Join("templates", r.URL.Path)
 
 	dirs, err := listDirs(*photoRoot)
 	if err != nil {
@@ -74,7 +59,6 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// dir := path.Join(*photoRoot, r.URL.Path)
 	imgJson, err := listImages(*photoRoot, r.URL.Path)
 	if err != nil {
 		log.Println(err.Error())
