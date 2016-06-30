@@ -1,28 +1,23 @@
 #!/bin/sh
 
-# This is how I deploy to Raspberry Pi 2 (server). You can also find my server
-# configuration here: https://github.com/zefer/ansible/tree/master/roles/mothership
-
-server_host=music
-
-export GO15VENDOREXPERIMENT=1
+server_host=bass
 
 echo 'Compiling assets to go-bindata'
-go-bindata -o frontend.go -prefix "frontend/dist/" frontend/dist/...
+go-bindata -o assets.go -prefix "assets" assets/...
 
-echo 'Compiling for Rasperry Pi'
+echo 'Compiling for Linux'
 # GOOS=linux GOARM=6 GOARCH=arm go build
-GOOS=linux GOARM=7 GOARCH=arm go build
+GOOS=linux GOARCH=amd64 go build
 
 echo 'Sending binary to music server'
-scp mothership $server_host:/home/joe
+scp miniphoto $server_host:/home/bass
 
-echo 'Running commands on music server'
+echo 'Running commands on server'
 ssh $server_host -t '\
-  sudo systemctl stop mothership \
+  sudo service miniphoto stop \
   && sleep 1 \
-  && sudo mv /home/joe/mothership /usr/bin \
-  && sudo setcap cap_net_bind_service=ep /usr/bin/mothership \
-  && sudo systemctl start mothership \
+  && sudo mv /home/bass/miniphoto /usr/bin \
+  && sudo setcap cap_net_bind_service=ep /usr/bin/miniphoto \
+  && sudo service miniphoto start \
   && sleep 1
 '
