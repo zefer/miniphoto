@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"path"
 	"strings"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
@@ -51,9 +50,6 @@ func main() {
 }
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
-	lp := path.Join("templates", "layout.html")
-	pp := path.Join("templates", "photoswipe.html")
-
 	dirs, err := listDirs(*photoRoot)
 	if err != nil {
 		log.Println(err.Error())
@@ -76,7 +72,16 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles(lp, pp)
+	tmpl := template.New("layout")
+	tmpl, err = tmpl.Parse(layoutTemplate)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	_ = template.New("photoswipe")
+	_, err = tmpl.Parse(photoswipeTemplate)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
