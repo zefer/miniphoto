@@ -64,9 +64,15 @@ func main() {
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
 	lp := path.Join("templates", "layout.html")
-	np := path.Join("templates", "nav.html")
 	pp := path.Join("templates", "photoswipe.html")
 	// fp := path.Join("templates", r.URL.Path)
+
+	dirs, err := listDirs(*photoRoot)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
 
 	// dir := path.Join(*photoRoot, r.URL.Path)
 	imgJson, err := listImages(*photoRoot, r.URL.Path)
@@ -76,7 +82,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles(lp, np, pp)
+	tmpl, err := template.ParseFiles(lp, pp)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
@@ -89,7 +95,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		Images template.JS
 	}{
 		"Banana",
-		[]string{},
+		dirs,
 		template.JS(imgJson),
 	}
 
