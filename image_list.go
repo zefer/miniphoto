@@ -19,15 +19,15 @@ type Image struct {
 	H     int    `json:"h"`
 }
 
-func listImages(root *string, uri string) ([]byte, error) {
-	dir := path.Join(*root, uri)
+func listImages(root string, uri string) ([]byte, error) {
+	dir := path.Join(root, uri)
 
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
 
-	images := readImageProperties(files, *root)
+	images := readImageProperties(files, dir, uri)
 
 	b, err := json.Marshal(images)
 	if err != nil {
@@ -37,14 +37,14 @@ func listImages(root *string, uri string) ([]byte, error) {
 	return b, nil
 }
 
-func readImageProperties(orig []os.FileInfo, root string) []*Image {
+func readImageProperties(orig []os.FileInfo, root string, uri string) []*Image {
 	images := make([]*Image, 0)
 	for _, file := range orig {
 		w, h, err := getImageDimension(path.Join(root, file.Name()))
 		if err == nil {
 			images = append(images, &Image{
 				Title: file.Name(),
-				Src:   path.Join("/photo", file.Name()),
+				Src:   path.Join("/photo", uri, file.Name()),
 				W:     w,
 				H:     h,
 			})

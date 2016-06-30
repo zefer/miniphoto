@@ -68,7 +68,8 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 	pp := path.Join("templates", "photoswipe.html")
 	// fp := path.Join("templates", r.URL.Path)
 
-	imgJson, err := listImages(photoRoot, "")
+	// dir := path.Join(*photoRoot, r.URL.Path)
+	imgJson, err := listImages(*photoRoot, r.URL.Path)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
