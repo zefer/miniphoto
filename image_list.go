@@ -13,10 +13,10 @@ import (
 )
 
 type Image struct {
-	Path string `json:"path"`
-	Src  string `json:"src"`
-	W    int    `json:"w"`
-	H    int    `json:"h"`
+	Title string `json:"title"`
+	Src   string `json:"src"`
+	W     int    `json:"w"`
+	H     int    `json:"h"`
 }
 
 func listImages(root *string, uri string) ([]byte, error) {
@@ -43,10 +43,10 @@ func readImageProperties(orig []os.FileInfo, root string) []*Image {
 		w, h, err := getImageDimension(path.Join(root, file.Name()))
 		if err == nil {
 			images = append(images, &Image{
-				Path: file.Name(),
-				Src:  path.Join("/photo", file.Name()),
-				W:    w,
-				H:    h,
+				Title: file.Name(),
+				Src:   path.Join("/photo", file.Name()),
+				W:     w,
+				H:     h,
 			})
 		}
 	}
