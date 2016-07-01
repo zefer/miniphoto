@@ -7,6 +7,7 @@ slideshow functionality provided by the [photoswipe][photoswipe] library.
 
 Directory driven, expects the following, simple 2-level directory structure:
 
+```
 root
 ├── some-images
 │   ├── credits.html
@@ -17,13 +18,14 @@ root
 │   ├── image4.jpg
 └── and-so-on
 │   ├── image5.jpg
+```
 
 If a file named `credits.html` is placed in a photo directory, it's html content
 will be rendered at the top of that page.
 
 ## Usage
 
-See `bin/dev` & `bin/deploy'
+See `bin/dev` & `bin/deploy`
 
 ## License
 
