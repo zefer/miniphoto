@@ -17,7 +17,7 @@ header .home, h1 {
   padding-top: 0;
 }
 
-main, nav {
+main, nav, .credits {
   clear: both;
 }
 

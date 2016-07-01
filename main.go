@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"flag"
 	"html/template"
+	"io/ioutil"
 	"net/http"
+	"path"
 	"strings"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
@@ -57,19 +59,24 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	path := r.URL.Path
-	title := strings.Replace(path, "/", "", -1)
+	p := r.URL.Path
+	title := strings.Replace(p, "/", "", -1)
 	if title == "" {
 		title = *appTitle
 	} else {
 		title = *appTitle + ": " + title
 	}
 
-	images, err := listImages(*photoRoot, path)
+	images, err := listImages(*photoRoot, p)
 	if err != nil {
 		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
+	}
+
+	credits, err := ioutil.ReadFile(path.Join(*photoRoot, p, "credits.html"))
+	if err != nil {
+		credits = nil
 	}
 
 	imageJson, err := json.Marshal(images)
@@ -98,6 +105,7 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		AppName   string
 		Title     string
+		Credits   template.HTML
 		Dirs      []string
 		Images    []*Image
 		ImageJson template.JS
@@ -105,10 +113,11 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	}{
 		*appTitle,
 		title,
+		template.HTML(string(credits)),
 		dirs,
 		images,
 		template.JS(imageJson),
-		path == "/",
+		p == "/",
 	}
 
 	if err := tmpl.ExecuteTemplate(w, "layout", &data); err != nil {

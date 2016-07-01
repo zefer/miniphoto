@@ -37,6 +37,7 @@ const layoutTemplate = `
 	{{end}}
 </ul></nav>
 {{else}}
+<section class="credits">{{.Credits}}</section>
 <main>
 	<ul class="gallery">
 	{{range $i, $img := .Images}}<li><img src="{{.Src}}" alt="{{.Title}}" height="150" onclick="zoom({{$i}});" /></li>
