@@ -8,11 +8,12 @@ const layoutTemplate = `
   <meta charset="utf-8">
   <title>{{.Title}}</title>
 
-  <link rel="stylesheet" href="assets/photoswipe.css"> 
-  <link rel="stylesheet" href="assets/default-skin/default-skin.css"> 
-  <link rel="stylesheet" href="assets/app.css"> 
-  <script src="assets/photoswipe.min.js"></script> 
-  <script src="assets/photoswipe-ui-default.min.js"></script> 
+  <link rel="stylesheet" href="assets/photoswipe.css">
+  <link rel="stylesheet" href="assets/default-skin/default-skin.css">
+  <link rel="stylesheet" href="assets/app.css">
+  <script src="assets/photoswipe.min.js"></script>
+  <script src="assets/photoswipe-ui-default.min.js"></script>
+  <script src="assets/app.js"></script>
 
 </head>
 <body>
@@ -29,7 +30,7 @@ const layoutTemplate = `
 {{else}}
   <main>
 	<ul class="gallery">
-		{{range .Images}}<li><img src="{{.Src}}" alt="{{.Title}}" height="150" />{{end}}
+	{{range $i, $img := .Images}}<li><img src="{{.Src}}" alt="{{.Title}}" height="150" onclick="zoom({{$i}});" /></li>{{end}}
 	</ul>
   {{template "photoswipe"}}
   </main>
@@ -37,13 +38,6 @@ const layoutTemplate = `
 
 <script>
 var images = {{.ImageJson}};
-var pswpElement = document.querySelectorAll('.pswp')[0];
-var options = {
-  index: 0,
-  shareEl: false,
-};
-var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, images, options);
-gallery.init();
 </script>
 
 </body>
