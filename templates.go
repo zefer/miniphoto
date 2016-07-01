@@ -11,6 +11,7 @@ const layoutTemplate = `
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="assets/milligram.css">
   <link rel="stylesheet" href="assets/photoswipe.css">
   <link rel="stylesheet" href="assets/default-skin/default-skin.css">
   <link rel="stylesheet" href="assets/app.css">
