@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 
@@ -53,7 +52,7 @@ func main() {
 func handleMain(w http.ResponseWriter, r *http.Request) {
 	dirs, err := listDirs(*photoRoot)
 	if err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -68,14 +67,14 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 
 	images, err := listImages(*photoRoot, path)
 	if err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	imageJson, err := json.Marshal(images)
 	if err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -83,7 +82,7 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.New("layout")
 	tmpl, err = tmpl.Parse(layoutTemplate)
 	if err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -91,7 +90,7 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	_ = template.New("photoswipe")
 	_, err = tmpl.Parse(photoswipeTemplate)
 	if err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -113,7 +112,7 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := tmpl.ExecuteTemplate(w, "layout", &data); err != nil {
-		log.Println(err.Error())
+		glog.Error(err)
 		http.Error(w, http.StatusText(500), 500)
 	}
 }

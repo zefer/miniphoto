@@ -1,4 +1,10 @@
 #!/bin/sh
 
 go-bindata -debug -o ./assets.go -prefix "assets" assets/...
-go run *.go -root "/Users/joe/Dropbox (Personal)/Pictures/" -port :8081 -title "Bass Week Photos"
+go run *.go \
+  -root "/Users/joe/Dropbox (Personal)/Pictures/" \
+  -port :8081 \
+  -title "Bass Week Photos" \
+  -abenv=dev \
+  -abprojectid=$AIRBRAKE_PROJECT_ID \
+  -abapikey=$AIRBRAKE_API_KEY
