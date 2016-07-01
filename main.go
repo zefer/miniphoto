@@ -97,12 +97,14 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
+		AppName   string
 		Title     string
 		Dirs      []string
 		Images    []*Image
 		ImageJson template.JS
 		Home      bool
 	}{
+		*appTitle,
 		title,
 		dirs,
 		images,

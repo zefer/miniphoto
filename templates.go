@@ -6,7 +6,10 @@ const layoutTemplate = `
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{{.Title}}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="assets/photoswipe.css">
   <link rel="stylesheet" href="assets/default-skin/default-skin.css">
@@ -15,6 +18,10 @@ const layoutTemplate = `
   <script src="assets/photoswipe-ui-default.min.js"></script>
   <script src="assets/app.js"></script>
 
+  <link rel="icon" href="assets/icon.png" />
+  <link rel="apple-touch-icon-precomposed" href="assets/icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="{{.AppName}}">
 </head>
 <body>
 
