@@ -20,3 +20,9 @@ header .home, h1 {
 main, nav {
   clear: both;
 }
+
+.gallery li {
+  float: left;
+  margin: 5px;
+  list-style-type: none;
+}

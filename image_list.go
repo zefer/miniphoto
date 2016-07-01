@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"image"
 	_ "image/gif"
@@ -19,7 +18,7 @@ type Image struct {
 	H     int    `json:"h"`
 }
 
-func listImages(root string, uri string) ([]byte, error) {
+func listImages(root string, uri string) ([]*Image, error) {
 	dir := path.Join(root, uri)
 
 	files, err := ioutil.ReadDir(dir)
@@ -29,12 +28,7 @@ func listImages(root string, uri string) ([]byte, error) {
 
 	images := readImageProperties(files, dir, uri)
 
-	b, err := json.Marshal(images)
-	if err != nil {
-		return nil, err
-	}
-
-	return b, nil
+	return images, nil
 }
 
 func readImageProperties(orig []os.FileInfo, root string, uri string) []*Image {

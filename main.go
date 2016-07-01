@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"html/template"
 	"log"
@@ -65,7 +66,14 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 		title = *appTitle + ": " + title
 	}
 
-	imgJson, err := listImages(*photoRoot, path)
+	images, err := listImages(*photoRoot, path)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	imageJson, err := json.Marshal(images)
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
@@ -89,14 +97,16 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		Title  string
-		Dirs   []string
-		Images template.JS
-		Home   bool
+		Title     string
+		Dirs      []string
+		Images    []*Image
+		ImageJson template.JS
+		Home      bool
 	}{
 		title,
 		dirs,
-		template.JS(imgJson),
+		images,
+		template.JS(imageJson),
 		path == "/",
 	}
 

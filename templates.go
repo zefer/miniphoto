@@ -28,12 +28,15 @@ const layoutTemplate = `
   </ul></nav>
 {{else}}
   <main>
+	<ul class="gallery">
+		{{range .Images}}<li><img src="{{.Src}}" alt="{{.Title}}" height="150" />{{end}}
+	</ul>
   {{template "photoswipe"}}
   </main>
 {{end}}
 
 <script>
-var images = {{.Images}};
+var images = {{.ImageJson}};
 var pswpElement = document.querySelectorAll('.pswp')[0];
 var options = {
   index: 0,
