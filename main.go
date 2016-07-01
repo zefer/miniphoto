@@ -63,8 +63,6 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 	title := strings.Replace(p, "/", "", -1)
 	if title == "" {
 		title = *appTitle
-	} else {
-		title = *appTitle + ": " + title
 	}
 
 	images, err := listImages(*photoRoot, p)

@@ -1,14 +1,12 @@
 header .home {
-  font-size: 1.7em;
+  margin-top: .7em;
+  font-size: 1.4em;
   float: right;
   text-decoration: none;
 }
 
 h1 {
   float: left;
-}
-
-header .home, h1 {
   margin-top: .2em;
   padding-top: 0;
 }
