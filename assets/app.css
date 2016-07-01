@@ -17,6 +17,11 @@ main, nav, .credits {
   clear: both;
 }
 
+nav li {
+  list-style-type: none;
+  font-size: 1.5em;
+}
+
 .gallery li {
   float: left;
   margin: 5px;
