@@ -36,7 +36,8 @@ const layoutTemplate = `
 var images = {{.Images}};
 var pswpElement = document.querySelectorAll('.pswp')[0];
 var options = {
-  index: 0 // start at first slide
+  index: 0,
+  shareEl: false,
 };
 var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, images, options);
 gallery.init();
