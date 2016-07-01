@@ -59,6 +59,8 @@ func handleMain(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO: 404 when the path doesn't exist.
+
 	p := r.URL.Path
 	title := strings.Replace(p, "/", "", -1)
 	if title == "" {
