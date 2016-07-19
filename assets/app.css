@@ -20,9 +20,14 @@ nav li {
   font-size: 1.5em;
 }
 
+.gallery {
+  text-align: center;
+}
+
 .gallery li {
-  float: left;
   margin: 5px;
+  display: inline-block;
+  text-align: center;
   list-style-type: none;
   cursor: zoom-in;
 }
